@@ -332,6 +332,8 @@ type ModelRegistryStatus struct {
 	// Important: Run "make" to regenerate code after modifying this file
 
 	Conditions []metav1.Condition `json:"conditions,omitempty"`
+
+	URL *string `json:"url,omitempty"`
 }
 
 //+kubebuilder:object:root=true

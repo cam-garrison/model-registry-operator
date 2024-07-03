@@ -203,7 +203,7 @@ func (r *ModelRegistryReconciler) Reconcile(ctx context.Context, req ctrl.Reques
 
 	// set custom resource status
 	available := false
-	if available, err = r.setRegistryStatus(ctx, req, result); err != nil {
+	if available, err = r.setRegistryStatus(ctx, req, result, params); err != nil {
 		return ctrl.Result{Requeue: true}, err
 	}
 	log.Info("status reconciled")

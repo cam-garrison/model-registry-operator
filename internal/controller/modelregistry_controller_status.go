@@ -61,7 +61,7 @@ const (
 	ReasonResourcesUnavailable = "ResourcesUnavailable"
 )
 
-func (r *ModelRegistryReconciler) setRegistryStatus(ctx context.Context, req ctrl.Request, operationResult OperationResult) (bool, error) {
+func (r *ModelRegistryReconciler) setRegistryStatus(ctx context.Context, req ctrl.Request, operationResult OperationResult, params *ModelRegistryParams) (bool, error) {
 	log := klog.FromContext(ctx)
 
 	modelRegistry := &modelregistryv1alpha1.ModelRegistry{}
@@ -148,6 +148,9 @@ func (r *ModelRegistryReconciler) setRegistryStatus(ctx context.Context, req ctr
 	if available && r.HasIstio {
 		status, reason, message = r.SetIstioAndGatewayConditions(ctx, req, modelRegistry, status, reason, message)
 	}
+
+	url := "https://" + params.Name + "-rest." + params.Spec.Istio.Gateway.Domain
+	modelRegistry.Status.URL = &url
 
 	meta.SetStatusCondition(&modelRegistry.Status.Conditions, metav1.Condition{Type: ConditionTypeAvailable,
 		Status: status, Reason: reason,
